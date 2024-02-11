@@ -1,7 +1,6 @@
-﻿using System.Text.Json.Serialization;
-using static MendisWannaTravel.Services.ChatCompletionRequest;
+﻿using static ApiMendis.Services.ChatCompletionRequest;
 
-namespace MendisWannaTravel.Services
+namespace ApiMendis.Services
 {
     public record ChatCompletionRequest(
         IEnumerable<MessageRequest> Messages,

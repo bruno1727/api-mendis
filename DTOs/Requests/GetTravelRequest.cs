@@ -1,6 +1,13 @@
-﻿namespace MendisWannaTravel.Controllers.Requests
+﻿namespace ApiMendis.Controllers.Requests
 {
-    public record GetTravelRequest (IEnumerable<string> Characteristics)
+    public interface ICacheable
     {
+        string GetKeyCache();
+    }
+
+    public record GetTravelRequest (IEnumerable<string> Characteristics) : ICacheable
+    {
+        public string GetKeyCache()
+            => string.Join("-", Characteristics);
     }
 }

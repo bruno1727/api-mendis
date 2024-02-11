@@ -1,4 +1,4 @@
-﻿namespace api_mendis.DTOs.Responses
+﻿namespace ApiMendis.DTOs.Responses
 {
     public class GetTravelResponse
     {

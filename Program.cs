@@ -1,6 +1,7 @@
-using api_mendis.OpenAI;
-using MendisWannaTravel.Controllers.Requests;
-using MendisWannaTravel.Services;
+using ApiMendis.Controllers.Requests;
+using ApiMendis.Extensions;
+using ApiMendis.OpenAI;
+using ApiMendis.Services;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -32,6 +33,10 @@ builder.Services.AddSingleton(new JsonSerializerOptions(JsonSerializerDefaults.W
     Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Latin1Supplement)
 });
 
+var config = builder.Configuration;
+
+builder.Services.AddCache(config);
+
 builder.Services.AddScoped<ITravelService, TravelService>();
 builder.Services.AddScoped<IChatCompletionService, ChatCompletionService>();
 
@@ -54,6 +59,13 @@ travels.MapPost("/", async (GetTravelRequest request, ITravelService service) =>
 {
     var result = await service.GetAsync(request);
     return result.Destinos;
+});
+
+var cache = app.MapGroup("/cache");
+
+cache.MapPost("/flush",  (ICacheService service) =>
+{
+    service.FlushAll();
 });
 
 app.Run();

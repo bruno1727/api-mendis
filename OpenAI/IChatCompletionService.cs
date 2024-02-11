@@ -1,4 +1,4 @@
-﻿namespace api_mendis.OpenAI
+﻿namespace ApiMendis.OpenAI
 {
     public interface IChatCompletionService
     {

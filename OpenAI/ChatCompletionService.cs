@@ -1,7 +1,7 @@
-﻿using MendisWannaTravel.Services;
+﻿using ApiMendis.Services;
 using System.Text.Json;
 
-namespace api_mendis.OpenAI
+namespace ApiMendis.OpenAI
 {
     public class ChatCompletionService : IChatCompletionService
     {

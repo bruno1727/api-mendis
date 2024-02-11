@@ -1,7 +1,7 @@
-﻿using api_mendis.DTOs.Responses;
-using MendisWannaTravel.Controllers.Requests;
+﻿using ApiMendis.DTOs.Responses;
+using ApiMendis.Controllers.Requests;
 
-namespace MendisWannaTravel.Services
+namespace ApiMendis.Services
 {
     public interface ITravelService
     {
