@@ -1,7 +1,9 @@
+using ApiMendis;
 using ApiMendis.Controllers.Requests;
 using ApiMendis.Extensions;
 using ApiMendis.OpenAI;
 using ApiMendis.Services;
+using ApiMendis.User;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -40,7 +42,10 @@ var config = builder.Configuration;
 builder.Services.AddCache(config);
 
 builder.Services.AddScoped<ITravelService, TravelService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IChatCompletionService, ChatCompletionService>();
+
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 var app = builder.Build();
 
