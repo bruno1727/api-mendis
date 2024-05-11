@@ -29,7 +29,6 @@ namespace ApiMendis.Services
         {
             var message = $"3 destinos para viajar de férias, palavras-chave: {string.Join(", ", request.Characteristics)}. Responda em JSON com um array composto pelos campos: cidade, regiao, caracteristicas";
             var key = request.GetKeyCache();
-            await _cache.TryGetCacheAsnc<string>(key, _logger);
             var result = await _cache.TryGetCacheAsnc<string>(key, _logger)
                 ?? (await _chatCompletionService.GetAsync(message)).TryCache(_cache, key, _logger);
 

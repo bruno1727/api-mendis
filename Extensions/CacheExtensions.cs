@@ -1,6 +1,7 @@
 ﻿using ApiMendis.Services;
 using AsyncAwaitBestPractices;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 using System.Text.Json;
 
@@ -20,8 +21,8 @@ namespace ApiMendis.Extensions
                 AllowAdmin = true
             };
 
-            var redis = ConnectionMultiplexer.Connect(configOptions);
-            services.AddSingleton<ICacheService>((_) => new CacheService(redis));
+            services.AddSingleton((_) => configOptions);
+            services.AddSingleton<ICacheService, CacheService>();
 
             services.AddStackExchangeRedisCache(options =>
             {
@@ -43,9 +44,14 @@ namespace ApiMendis.Extensions
 
                 return default;
             }
+            catch (RedisConnectionException e)
+            {
+                logger.LogWarning(e, "Falha ao tenta conectar no redis");
+                return default;
+            }
             catch (Exception e)
             {
-                logger.LogError(e, $"Falha em busar o cache da chave {key}");
+                logger.LogWarning(e, $"Falha em busar o cache da chave {key}");
                 return default;
             }
         }
@@ -57,7 +63,7 @@ namespace ApiMendis.Extensions
                 key,
                 JsonSerializer.Serialize(value),
                 new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = tempoExpiracao ?? TimeSpan.FromHours(1) }
-            ).SafeFireAndForget(e => logger.LogError($"Falha em fazer o cahe da chave {key} erro {e}"));
+            ).SafeFireAndForget(e => logger.LogWarning($"Falha em fazer o cahe da chave {key} erro {e}"));
         }
 
         public static T? TryCache<T>(this T? value, IDistributedCache cache, string key, ILogger logger, TimeSpan? tempoExpiracao = null)

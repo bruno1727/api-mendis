@@ -4,15 +4,36 @@ namespace ApiMendis.Services
 {
     public class CacheService : ICacheService
     {
-        private readonly ConnectionMultiplexer _redis;
-        public CacheService(ConnectionMultiplexer redis)
+        private ConnectionMultiplexer? _redis;
+        private readonly ConfigurationOptions _configOptions;
+        private readonly ILogger<CacheService> _logger;
+        public CacheService(
+            ConfigurationOptions configOptions,
+            ILogger<CacheService> logger)
         {
-            _redis = redis;
+            _configOptions = configOptions;
+            _logger = logger;
+        }
+
+        private void Connect()
+        {
+            if (_redis != null) return;
+
+            try
+            {
+                _redis = ConnectionMultiplexer.Connect(_configOptions);
+            }
+            catch (RedisConnectionException e)
+            {
+                _logger.LogWarning(e, "Falha ao tenta conectar no redis");
+            }
         }
 
         public void FlushAll()
         {
-            var endpoint = _redis.GetEndPoints().First();
+            Connect();
+            if (_redis == null) return;
+            var endpoint = _redis!.GetEndPoints().First();
             var server = _redis.GetServer(endpoint);
             server.FlushAllDatabases();
         }

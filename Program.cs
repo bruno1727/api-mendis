@@ -35,6 +35,8 @@ builder.Services.AddSingleton(new JsonSerializerOptions(JsonSerializerDefaults.W
 
 var config = builder.Configuration;
 
+
+
 builder.Services.AddCache(config);
 
 builder.Services.AddScoped<ITravelService, TravelService>();
