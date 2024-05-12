@@ -2,7 +2,7 @@
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : IEntity
     {
-        public Task InsertAsync(TEntity entity)
+        public Task<bool> InsertAsync(TEntity entity)
         {
             throw new NotImplementedException();
         }

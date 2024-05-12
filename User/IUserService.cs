@@ -2,6 +2,6 @@
 {
     public interface IUserService
     {
-        public Task SignUpAsync(User user);
+        public Task<bool> SignUpAsync(User user);
     }
 }

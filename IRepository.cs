@@ -2,6 +2,6 @@
 {
     public interface IRepository<TEntity> where TEntity : IEntity
     {
-        Task InsertAsync(TEntity entity);
+        Task<bool> InsertAsync(TEntity entity);
     }
 }
