@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using ApiMendis.Notifications;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace ApiMendis.User
@@ -6,15 +7,24 @@ namespace ApiMendis.User
     public class UserService : IUserService
     {
         private readonly IRepository<User> _repository;
-        public UserService(IRepository<User> repository)
+        private readonly INotificationService _notificationService;
+
+
+        public UserService(
+            INotificationService notificationService,
+            IRepository<User> repository)
         {
             _repository = repository;
+            _notificationService = notificationService;
         }
 
         public async Task<bool> SignUpAsync(User user)
         {
-            if(!IsValidEmail(user.Email))
+            if (!IsValidEmail(user.Email))
+            {
+                _notificationService.Add(ValidationMessages.InvalidEmail);
                 return false;
+            }
 
             return await _repository.InsertAsync(user);
         }
