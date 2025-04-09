@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiMendis", "ApiMendis\ApiM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiMendisTests", "ApiMendisTests\ApiMendisTests.csproj", "{E0323FD9-EC71-4F98-962F-A51C81422CFE}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{8B5AE8E4-8D2F-4D86-B801-2B5FCA43E644}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{E0323FD9-EC71-4F98-962F-A51C81422CFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0323FD9-EC71-4F98-962F-A51C81422CFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0323FD9-EC71-4F98-962F-A51C81422CFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B5AE8E4-8D2F-4D86-B801-2B5FCA43E644}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B5AE8E4-8D2F-4D86-B801-2B5FCA43E644}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B5AE8E4-8D2F-4D86-B801-2B5FCA43E644}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B5AE8E4-8D2F-4D86-B801-2B5FCA43E644}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

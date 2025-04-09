@@ -11,23 +11,11 @@ namespace ApiMendis.Extensions
     {
         public static void AddCache(this IServiceCollection services, IConfiguration config)
         {
-            var configOptions = new ConfigurationOptions()
-            {
-                EndPoints = {
-                    { config["Redis:EndPoint:Host"]!, int.Parse(config["Redis:EndPoint:Port"]!) },
-                },
-                User = config["Redis:User"]!,
-                Password = config["Redis:Password"],
-                AllowAdmin = true
-            };
-
-            services.AddSingleton((_) => configOptions);
             services.AddSingleton<ICacheService, CacheService>();
 
             services.AddStackExchangeRedisCache(options =>
             {
-                options.InstanceName = "redis-RV7c";
-                options.ConfigurationOptions = configOptions;
+                options.Configuration = config.GetConnectionString("Redis");
             });
         }
 

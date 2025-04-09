@@ -5,14 +5,14 @@ namespace ApiMendis.Services
     public class CacheService : ICacheService
     {
         private ConnectionMultiplexer? _redis;
-        private readonly ConfigurationOptions _configOptions;
+        private IConfiguration _configuration;
         private readonly ILogger<CacheService> _logger;
         public CacheService(
-            ConfigurationOptions configOptions,
-            ILogger<CacheService> logger)
+            ILogger<CacheService> logger,
+            IConfiguration configuration)
         {
-            _configOptions = configOptions;
             _logger = logger;
+            _configuration = configuration;
         }
 
         private void Connect()
@@ -21,7 +21,7 @@ namespace ApiMendis.Services
 
             try
             {
-                _redis = ConnectionMultiplexer.Connect(_configOptions);
+                _redis = ConnectionMultiplexer.Connect(_configuration.GetConnectionString("Redis"));
             }
             catch (RedisConnectionException e)
             {
