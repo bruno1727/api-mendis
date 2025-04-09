@@ -42,7 +42,9 @@ namespace ApiMendis.OpenAI
             var result = await JsonSerializer.DeserializeAsync
                 <ChatCompletionResponse>(contentStream, _serializerOptions);
 
-            return result?.Choices?.FirstOrDefault()?.Message?.Content ?? "";
+            return result?.Choices?.FirstOrDefault()?.Message?.Content
+                .Replace("```json", "")
+                .Replace("```", "") ?? "";
         }
     }
 }

@@ -32,7 +32,9 @@ namespace ApiMendis.Services
             var result = await _cache.TryGetCacheAsnc<string>(key, _logger)
                 ?? (await _chatCompletionService.GetAsync(message)).TryCache(_cache, key, _logger);
 
-            return JsonSerializer.Deserialize<GetTravelResponse>(result!, _serializerOptions)!;
+            var destinos = JsonSerializer.Deserialize<IEnumerable<GetTravelResponse.Destino>>(result!, _serializerOptions)!;
+
+            return new GetTravelResponse(destinos);
         }
     }
 }
