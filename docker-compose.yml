@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  apimendis:
+    image: ${DOCKER_REGISTRY-}apimendis
+    build:
+      context: .
+      dockerfile: ApiMendis/Dockerfile
+
+  travel.cache:
+    image: redis:latest
+    restart: always
+    ports:
+      - '6379:6379' 
