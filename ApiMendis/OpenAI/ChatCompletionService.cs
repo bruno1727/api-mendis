@@ -24,7 +24,7 @@ namespace ApiMendis.OpenAI
         public async Task<string> GetAsync(string message)
         {
             var request = new ChatCompletionRequest(
-                new List<ChatCompletionRequest.MessageRequest>() { new ChatCompletionRequest.MessageRequest(message.ToString()) }
+                new List<ChatCompletionRequest.MessageRequest>() { new(message.ToString()) }
             );
 
             var apiKey = _configuration["OpenAI:ApiKey"];
@@ -34,9 +34,10 @@ namespace ApiMendis.OpenAI
             _logger.LogInformation($"Request: {JsonSerializer.Serialize(request, _serializerOptions)}");
             using HttpResponseMessage response = await client.PostAsJsonAsync("chat/completions", request, _serializerOptions);
 
+            _logger.LogInformation($"Response: {await response.Content.ReadAsStringAsync()}");
+
             response.EnsureSuccessStatusCode();
 
-            _logger.LogInformation($"Response: {await response.Content.ReadAsStringAsync()}");
             var contentStream = await response.Content.ReadAsStreamAsync();
 
             var result = await JsonSerializer.DeserializeAsync

@@ -5,9 +5,12 @@
         string GetKeyCache();
     }
 
-    public record GetTravelRequest (IEnumerable<string> Characteristics) : ICacheable
+    public record GetTravelRequest (
+        string Country) : ICacheable
     {
+        public IEnumerable<string> Characteristics { get; set; } = new List<string>();
+
         public string GetKeyCache()
-            => string.Join("-", Characteristics);
+            => Country + string.Join("-", Characteristics);
     }
 }

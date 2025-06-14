@@ -27,14 +27,31 @@ namespace ApiMendis.Services
 
         public async Task<GetTravelResponse> GetAsync(GetTravelRequest request)
         {
-            var message = $"3 destinos para viajar de férias, palavras-chave: {string.Join(", ", request.Characteristics)}. Responda em JSON com um array composto pelos campos: cidade, regiao, caracteristicas";
+            var characteristicsMessage = string.Join(",", request.Characteristics);
+            if (!string.IsNullOrWhiteSpace(characteristicsMessage))
+                characteristicsMessage = $"Com as seguintes características: {characteristicsMessage}.";
+            var message = $@"
+                Liste 3 lugares interessantes para visitar em {request.Country}.
+                {characteristicsMessage}
+                Responda apenas com um JSON no seguinte formato:
+
+                {{
+                  ""destinos"": [
+                    {{
+                      ""cidade"": ""string"",
+                      ""regiao"": ""string"",
+                      ""caracteristicas"": ""string""
+                    }}
+                  ]
+                }}
+            ";
             var key = request.GetKeyCache();
             var result = await _cache.TryGetCacheAsnc<string>(key, _logger)
                 ?? (await _chatCompletionService.GetAsync(message)).TryCache(_cache, key, _logger);
 
-            var destinos = JsonSerializer.Deserialize<IEnumerable<GetTravelResponse.Destino>>(result!, _serializerOptions)!;
+            var response = JsonSerializer.Deserialize<GetTravelResponse>(result!, _serializerOptions)!;
 
-            return new GetTravelResponse(destinos);
+            return new GetTravelResponse(response.Destinos);
         }
     }
 }
