@@ -3,6 +3,8 @@ version: '3.4'
 services:
   apimendis:
     image: ${DOCKER_REGISTRY-}apimendis
+    ports:
+      - '8082:443' 
     build:
       context: .
       dockerfile: ApiMendis/Dockerfile
