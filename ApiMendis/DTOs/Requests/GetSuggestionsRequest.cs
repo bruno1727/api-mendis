@@ -5,7 +5,7 @@
         string GetKeyCache();
     }
 
-    public record GetTravelRequest (
+    public record GetSuggestionsRequest (
         string Country) : ICacheable
     {
         public IEnumerable<string> Characteristics { get; set; } = new List<string>();

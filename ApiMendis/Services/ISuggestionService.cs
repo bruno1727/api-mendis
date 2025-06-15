@@ -3,8 +3,8 @@ using ApiMendis.Controllers.Requests;
 
 namespace ApiMendis.Services
 {
-    public interface ITravelService
+    public interface ISuggestionService
     {
-        Task<GetTravelResponse> GetAsync(GetTravelRequest request);
+        Task<GetSuggestionsResponse> GetAsync(GetSuggestionsRequest request);
     }
 }

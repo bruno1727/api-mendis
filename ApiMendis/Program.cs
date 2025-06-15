@@ -42,7 +42,7 @@ var config = builder.Configuration;
 
 builder.Services.AddCache(config);
 
-builder.Services.AddScoped<ITravelService, TravelService>();
+builder.Services.AddScoped<ISuggestionService, SuggestionService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IChatCompletionService, ChatCompletionService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
@@ -64,7 +64,7 @@ app.UseCors();
 
 var travels = app.MapGroup("/travel");
 
-travels.MapPost("/", async (GetTravelRequest request, ITravelService service) =>
+travels.MapPost("/suggestions", async (GetSuggestionsRequest request, ISuggestionService service) =>
 {
     var result = await service.GetAsync(request);
     return result.Destinos;

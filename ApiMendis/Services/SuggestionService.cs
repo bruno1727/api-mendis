@@ -7,17 +7,17 @@ using System.Text.Json;
 
 namespace ApiMendis.Services
 {
-    public class TravelService : ITravelService
+    public class SuggestionService : ISuggestionService
     {
         private readonly IChatCompletionService _chatCompletionService;
         private readonly JsonSerializerOptions _serializerOptions;
         private readonly IDistributedCache _cache;
-        private readonly ILogger<TravelService> _logger;
+        private readonly ILogger<SuggestionService> _logger;
 
-        public TravelService(IChatCompletionService chatCompletionService,
+        public SuggestionService(IChatCompletionService chatCompletionService,
             JsonSerializerOptions serializerOptions,
             IDistributedCache cache,
-            ILogger<TravelService> logger)
+            ILogger<SuggestionService> logger)
         {
             _chatCompletionService = chatCompletionService;
             _serializerOptions = serializerOptions;
@@ -25,7 +25,7 @@ namespace ApiMendis.Services
             _logger = logger;
         }
 
-        public async Task<GetTravelResponse> GetAsync(GetTravelRequest request)
+        public async Task<GetSuggestionsResponse> GetAsync(GetSuggestionsRequest request)
         {
             var characteristicsMessage = string.Join(",", request.Characteristics);
             if (!string.IsNullOrWhiteSpace(characteristicsMessage))
@@ -49,9 +49,9 @@ namespace ApiMendis.Services
             var result = await _cache.TryGetCacheAsnc<string>(key, _logger)
                 ?? (await _chatCompletionService.GetAsync(message)).TryCache(_cache, key, _logger);
 
-            var response = JsonSerializer.Deserialize<GetTravelResponse>(result!, _serializerOptions)!;
+            var response = JsonSerializer.Deserialize<GetSuggestionsResponse>(result!, _serializerOptions)!;
 
-            return new GetTravelResponse(response.Destinos);
+            return new GetSuggestionsResponse(response.Destinos);
         }
     }
 }

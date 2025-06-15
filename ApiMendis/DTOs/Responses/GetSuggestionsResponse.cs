@@ -1,10 +1,10 @@
 ﻿namespace ApiMendis.DTOs.Responses
 {
-    public class GetTravelResponse
+    public class GetSuggestionsResponse
     {
         public IEnumerable<Destino> Destinos { get; init; }
 
-        public GetTravelResponse(IEnumerable<Destino> destinos) 
+        public GetSuggestionsResponse(IEnumerable<Destino> destinos) 
         {
             Destinos = destinos;
         }
