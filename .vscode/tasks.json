@@ -82,26 +82,6 @@
         }
       },
       {
-        "type": "docker-build",
-        "label": "docker-build: release",
-        "dependsOn": [
-          "build"
-        ],
-        "dockerBuild": {
-          "tag": "apimendis:latest",
-          "dockerfile": "${workspaceFolder}/ApiMendis/Dockerfile",
-          "context": "${workspaceFolder}",
-          "platform": {
-            "os": "linux",
-            "architecture": "amd64"
-          },
-          "pull": true
-        },
-        "netCore": {
-          "appProject": "${workspaceFolder}/ApiMendis/ApiMendis.csproj"
-        }
-      },
-      {
         "type": "docker-run",
         "label": "docker-run: debug",
         "dependsOn": [
@@ -114,14 +94,55 @@
         }
       },
       {
-        "type": "docker-run",
-        "label": "docker-run: release",
-        "dependsOn": [
-          "docker-build: release"
+        "label": "Start Docker Compose",
+        "type": "shell",
+        "command": "docker",
+        "args": [
+          "compose",
+          "-f",
+          "compose.debug.yaml",
+          "up",
+          "-d",
+          "--build"
         ],
-        "dockerRun": {},
-        "netCore": {
-          "appProject": "${workspaceFolder}/ApiMendis/ApiMendis.csproj"
+        "group": "build",
+        "presentation": {
+          "reveal": "always",
+          "panel": "new",
+          "close": true
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Stop Docker Compose",
+        "type": "shell",
+        "command": "docker",
+        "args": [
+          "compose",
+          "-f",
+          "compose.debug.yaml",
+          "down"
+        ],
+        "group": "build",
+        "presentation": {
+          "reveal": "always",
+          "panel": "new",
+          "close": true
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Restart Docker Compose",
+        "dependsOn": [
+          "Stop Docker Compose",
+          "Start Docker Compose"
+        ],
+        "dependsOrder": "sequence",
+        "group": "build",
+        "presentation": {
+          "reveal": "always",
+          "panel": "new",
+          "close": true
         }
       }
     ]

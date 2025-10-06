@@ -12,6 +12,13 @@ using System.Text.Unicode;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add Docker Secrets configuration
+var secretsPath = "/run/secrets/appsecrets.json";
+if (File.Exists(secretsPath))
+{
+    builder.Configuration.AddJsonFile(secretsPath, optional: true, reloadOnChange: false);
+}
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(

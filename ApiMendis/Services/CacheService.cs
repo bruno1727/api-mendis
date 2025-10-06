@@ -19,13 +19,24 @@ namespace ApiMendis.Services
         {
             if (_redis != null) return;
 
+            var connectionString = _configuration.GetConnectionString("Redis");
+            
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                _logger.LogError("Redis connection string not found in configuration");
+                return;
+            }
+
+            _logger.LogInformation("Connecting to Redis...");
+
             try
             {
-                _redis = ConnectionMultiplexer.Connect(_configuration.GetConnectionString("Redis"));
+                _redis = ConnectionMultiplexer.Connect(connectionString);
+                _logger.LogInformation("Successfully connected to Redis");
             }
             catch (RedisConnectionException e)
             {
-                _logger.LogWarning(e, "Falha ao tenta conectar no redis");
+                _logger.LogWarning(e, "Falha ao tentar conectar no redis");
             }
         }
 

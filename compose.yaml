@@ -8,3 +8,25 @@ services:
       dockerfile: ApiMendis/Dockerfile
     ports:
       - 5000:5000
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    secrets:
+      - appsecrets
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+secrets:
+  appsecrets:
+    file: ./secrets/appsecrets.json
+
+volumes:
+  redis_data:
